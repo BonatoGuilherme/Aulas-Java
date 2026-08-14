@@ -1,49 +1,55 @@
 void main (){
-    var nomeItem1 = "Suco";
-    var descricaoItem1 = "É um suco";
-    var estaEmPromocao = true;
-    var precoItem1 = 10.1;
-    var precoDescontoItem1 = precoItem1 * 0.8;
-    var categoriaItem1 = 2;
-    var nomeItem2 = "Arroz com feijao";
-    var descricaoItem2 = "Arroz com feijao tradicional familia brasileira";
-    var estaEmPromocao2 = false;
-    var precoItem2 = 5.1;
-    var precoDescontoItem2 = precoItem1 * 0.8;
-    var categoriaitem2 = 2;
+    //Cria a class cardapio dentro da estrutura principal do Java
+    ItemCardapio item1 = new ItemCardapio();
+    //Objeto (item1), atributo(name)
+    item1.nome = "Suco";
+    item1.descricao = "É um suco";
+    item1.emPromocao = false;
+    item1.preco = 2.66;
+    item1.precoDesconto = 1;
+    item1.id = 1;
+    item1.categoria = 1;
 
-    IO.println("Produto: " + nomeItem1 + "\n");
-    IO.println("Descrição:" + descricaoItem1 + "\n");
-    if (estaEmPromocao == true){
-        IO.println("Esta em desconto, seu preço fica em " + precoDescontoItem1 + " reais\n");
+    var item2 = new ItemCardapio();
+    item2.nome = "Arroz com feijao";
+    item2.descricao = "Arroz com feijao tradicional familia brasileira";
+    item2.emPromocao = true;
+    item2.preco = 2.66;
+    item2.id = 1;
+    item2.categoria = 1;
+
+    IO.println("Produto: " + item1.nome + "");
+    IO.println("Descrição:" + item1.descricao + "");
+    if (item1.emPromocao == true){
+        IO.println("Esta em desconto, seu preço fica em " + item1.precoDesconto + " reaiscl");
     } else {
-        IO.println("Não esta em promoção, seu preço original é" + precoItem1 + " reais\n");
+        IO.println("Não esta em promoção, seu preço original é" + item1.preco + " reais");
     }
     
-    if (categoriaItem1 == 1) {
-        IO.println("Categoria: Prato Principal\n");
-    } else if (categoriaItem1 == 2){
-         IO.println("Categoria: Bebidas\n");
-    } else if (categoriaItem1 == 3){
-         IO.println("Categoria: Sobremessas\n");
+    if ( item1.categoria == 1) {
+        IO.println("Categoria: Prato Principal");
+    } else if (item1.categoria == 2){
+         IO.println("Categoria: Bebidas");
+    } else if (item1.categoria == 3){
+         IO.println("Categoria: Sobremessas");
     }
-    IO.println("______________________________\n");
+    IO.println("______________________________");
 
-    switch (categoriaItem1) {
+    switch (item1.categoria) {
         case 1:
-            IO.println("Categoria: Prato Principal\n");
+            IO.println("Categoria: Prato Principal");
             break;
         case 2:
-            IO.println("Categoria: Bebidas\n");
+            IO.println("Categoria: Bebidas");
             break;
         case 3:
-            IO.println("Categoria: Sobremessas\n");
+            IO.println("Categoria: Sobremessas");
         default:
             IO.println("Categoria não encontrada");
             break;
     }
-    IO.println("______________________________\n");
-    IO.println("Arrays\n"); //Bloco de memoria, aloca memoria
+    IO.println("______________________________");
+    IO.println("Arrays"); //Bloco de memoria, aloca memoria
 
     double[] precos = new double[7]; 
 
@@ -57,9 +63,9 @@ void main (){
 
     boolean[] emPromocao = {true, false}; //Maneira literal
 
-    IO.println("Tamanho do array em precos" + precos.length);
-    IO.println("Tamanho do array em promoção" + emPromocao.length);
-    IO.println("O segundo item tem promoção? " + emPromocao[1]);
+    IO.println("Tamanho do array em precos:\n" + precos.length);
+    IO.println("Tamanho do array em promoção:\n" + emPromocao.length);
+    IO.println("O segundo item tem promoção?\n" + emPromocao[0]);
     IO.println("______________________________");
     IO.println("laço de repetição");
     IO.println("While");
@@ -70,8 +76,8 @@ void main (){
         double preco = precos[i];
         totalDePreco = totalDePreco + preco;
         i++; // Incrementa mais 1
-        IO.println("Total dos precos: " + totalDePreco);
     } 
+    IO.println("Total dos precos: " + totalDePreco);
     IO.println("do While");
     int totaldeitenspromocao = 0;
     int j = emPromocao.length - 1;
@@ -90,8 +96,17 @@ void main (){
         totaldeprecoscomFor += preco;
     }
     IO.println("Soma dos preços: " + totaldeprecoscomFor);
-    IO.println("______________________________");
-    IO.println("______________________________");
+
 }
-// javac compila, javac teste.java vai compilar, nao vai mostrar nada
+// javac compila, javac teste.java vai compilar, nao vai mostrar nada no console
 // java vai rodar, java teste.java vai rodar, mostrando oq esta dentro de IO.println()
+//Classes
+class ItemCardapio {
+    String nome; //Atributos
+    String descricao; //Atributos
+    boolean emPromocao; //Atributos
+    double preco; //Atributos
+    double precoDesconto; //Atributos
+    long id; //Atributos 
+    int categoria; //Atributos
+}
