@@ -1,7 +1,10 @@
 void main (){
     //Cria a class cardapio dentro da estrutura principal do Java
-    ItemCardapio item1 = new ItemCardapio();
-    //Objeto (item1), atributo(name)
+    ItemCardapio item1 = new ItemCardapio(1, "Suco", "É um suco", 2.66, 1);
+
+
+    //Objeto (item1), atributo(nome)
+    /*
     item1.nome = "Suco";
     item1.descricao = "É um suco";
     item1.emPromocao = false;
@@ -9,45 +12,22 @@ void main (){
     item1.precoDesconto = 1;
     item1.id = 1;
     item1.categoria = 1;
+    */
+    
 
-    var item2 = new ItemCardapio();
-    item2.nome = "Arroz com feijao";
-    item2.descricao = "Arroz com feijao tradicional familia brasileira";
-    item2.emPromocao = true;
-    item2.preco = 2.66;
-    item2.id = 1;
-    item2.categoria = 1;
+    var item2 = new ItemCardapio(2, "Arroz com feijao", "Arroz com feijao tradicional familia brasileira", 2.66, 1);
 
-    IO.println("Produto: " + item1.nome + "");
-    IO.println("Descrição:" + item1.descricao + "");
+  
+    IO.println("Descrição: " + item1.descricao + "");
     if (item1.emPromocao == true){
         IO.println("Esta em desconto, seu preço fica em " + item1.precoDesconto + " reaiscl");
     } else {
-        IO.println("Não esta em promoção, seu preço original é" + item1.preco + " reais");
+        IO.println("Não esta em promoção, seu preço original é " + item1.preco + " reais");
     }
-    
-    if ( item1.categoria == 1) {
-        IO.println("Categoria: Prato Principal");
-    } else if (item1.categoria == 2){
-         IO.println("Categoria: Bebidas");
-    } else if (item1.categoria == 3){
-         IO.println("Categoria: Sobremessas");
-    }
-    IO.println("______________________________");
+    var porcentagemDesconto = item2.calculaPorcentagemDesconto();
+    IO.println(porcentagemDesconto);
 
-    switch (item1.categoria) {
-        case 1:
-            IO.println("Categoria: Prato Principal");
-            break;
-        case 2:
-            IO.println("Categoria: Bebidas");
-            break;
-        case 3:
-            IO.println("Categoria: Sobremessas");
-        default:
-            IO.println("Categoria não encontrada");
-            break;
-    }
+    IO.println("Categoria: " + item2.obtemNomedaCategoria()); //Chamando um metodo
     IO.println("______________________________");
     IO.println("Arrays"); //Bloco de memoria, aloca memoria
 
@@ -63,9 +43,9 @@ void main (){
 
     boolean[] emPromocao = {true, false}; //Maneira literal
 
-    IO.println("Tamanho do array em precos:\n" + precos.length);
-    IO.println("Tamanho do array em promoção:\n" + emPromocao.length);
-    IO.println("O segundo item tem promoção?\n" + emPromocao[0]);
+    IO.println("Tamanho do array em precos: " + precos.length);
+    IO.println("Tamanho do array em promoção: " + emPromocao.length);
+    IO.println("O segundo item tem promoção? " + emPromocao[0]);
     IO.println("______________________________");
     IO.println("laço de repetição");
     IO.println("While");
@@ -96,7 +76,7 @@ void main (){
         totaldeprecoscomFor += preco;
     }
     IO.println("Soma dos preços: " + totaldeprecoscomFor);
-
+    
 }
 // javac compila, javac teste.java vai compilar, nao vai mostrar nada no console
 // java vai rodar, java teste.java vai rodar, mostrando oq esta dentro de IO.println()
@@ -109,4 +89,44 @@ class ItemCardapio {
     double precoDesconto; //Atributos
     long id; //Atributos 
     int categoria; //Atributos
+    //Linguagens orientadas a objetos
+    //Classes tem atributos e metodos
+    //Atributos são dados e os metodos são comportamento
+    //Metodo
+    double calculaPorcentagemDesconto(){
+        double calculo = (preco - precoDesconto) / preco;
+        return calculo;
+    }
+    
+    //Ja passa valores no new
+    //Não tem return
+    //Nome do contrutor sempre sera o nome da classe (ItemCardapio)
+    //CONTRUTOR
+    ItemCardapio(long idParam, String nomeParam, String descricaoParam, double precoParam, int precoDescontoParam){
+        id = idParam;
+        nome = nomeParam;
+        descricao = descricaoParam;
+        preco = precoParam;
+        precoDesconto = precoDescontoParam;
+    }
+    String obtemNomedaCategoria(){
+        String nomeCategoria;
+        switch (categoria) {
+        case 1:
+            nomeCategoria= "Prato Principal";
+            break;
+        case 2:
+            nomeCategoria= "Categoria: B ebidas";
+            break;
+        case 3:
+            nomeCategoria="Categoria: Sobremessas";
+        default:
+            nomeCategoria="Categoria não encontrada";
+            break;
+        }
+        return nomeCategoria;
+    }
+    
+    
+    
 }
