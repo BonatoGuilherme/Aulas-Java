@@ -1,8 +1,7 @@
 void main (){
     //Cria a class cardapio dentro da estrutura principal do Java
     ItemCardapio item1 = new ItemCardapio(1, "Suco", "É um suco", 2.66, 1);
-
-
+    var item2 = new ItemCardapio(2, "Arroz com feijao", "Arroz com feijao tradicional familia brasileira", 2.66, 1);
     //Objeto (item1), atributo(nome)
     /*
     item1.nome = "Suco";
@@ -13,11 +12,6 @@ void main (){
     item1.id = 1;
     item1.categoria = 1;
     */
-    
-
-    var item2 = new ItemCardapio(2, "Arroz com feijao", "Arroz com feijao tradicional familia brasileira", 2.66, 1);
-
-  
     IO.println("Descrição: " + item1.descricao + "");
     if (item1.emPromocao == true){
         IO.println("Esta em desconto, seu preço fica em " + item1.precoDesconto + " reaiscl");
@@ -102,12 +96,13 @@ class ItemCardapio {
     //Não tem return
     //Nome do contrutor sempre sera o nome da classe (ItemCardapio)
     //CONTRUTOR
-    ItemCardapio(long idParam, String nomeParam, String descricaoParam, double precoParam, int precoDescontoParam){
-        id = idParam;
-        nome = nomeParam;
-        descricao = descricaoParam;
-        preco = precoParam;
-        precoDesconto = precoDescontoParam;
+    //ItemCardapio(objeto), long id(parametro), long(tipo), id(nome)
+    ItemCardapio(long id, String nome, String descricao, double preco, int precoDesconto){
+        this.id = id; //O this.id (com this) é a propriedade (o campo) que pertence ao objeto
+        this.nome = nome; //O id (sem this) é o valor que veio de fora (como um parâmetro de uma função).
+        this.descricao = descricao;
+        this.preco = preco;
+        this.precoDesconto = precoDesconto;
     }
     String obtemNomedaCategoria(){
         String nomeCategoria;
@@ -125,8 +120,5 @@ class ItemCardapio {
             break;
         }
         return nomeCategoria;
-    }
-    
-    
-    
+    }   
 }
