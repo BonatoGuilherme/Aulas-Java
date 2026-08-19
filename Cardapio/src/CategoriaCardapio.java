@@ -1,0 +1,3 @@
+enum CategoriaCardapio {
+    ENTRADAS, PRATOS_PRINCIPAIS, SOBREMESSAS, BEBIDAS
+}
