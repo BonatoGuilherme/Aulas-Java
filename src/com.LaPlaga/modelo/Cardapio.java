@@ -1,5 +1,7 @@
 package com.LaPlaga.modelo;
 
+import com.LaPlaga.modelo.isento.ItemCardapioIsento;
+
 public class Cardapio {
     //Domínio do Problema que estou resolvendo
     private final ItemCardapio[] itens;

@@ -1,8 +1,11 @@
-package com.LaPlaga.modelo; //Boas Praticas
+package com.LaPlaga.modelo.isento; //Boas Praticas
+
+import com.LaPlaga.modelo.CategoriaCardapio;
+import com.LaPlaga.modelo.ItemCardapio;
 
 public class ItemCardapioIsento extends ItemCardapio {
 
-    ItemCardapioIsento(long id, String nome, String descricao, double preco, int precoDesconto, CategoriaCardapio categoria) {
+    public ItemCardapioIsento(long id, String nome, String descricao, double preco, int precoDesconto, CategoriaCardapio categoria) {
         //chama da classe mãe (ItemCardapio) o contrutor dela com o SUPER()
         super(id, nome, descricao, preco, precoDesconto, categoria);
     }

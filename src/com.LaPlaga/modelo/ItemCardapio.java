@@ -27,7 +27,7 @@ public class ItemCardapio {
     // Nome do contrutor sempre sera o nome da classe (modelo.ItemCardapio)
     // CONTRUTOR
     // modelo.ItemCardapio(objeto), long id(parametro), long(tipo), id(nome)
-    ItemCardapio(long id, String nome, String descricao, double preco, int precoDesconto, CategoriaCardapio categoria) {
+    protected ItemCardapio(long id, String nome, String descricao, double preco, int precoDesconto, CategoriaCardapio categoria) {
         this.id = id; // O this.id (com this) é a propriedade (o campo) que pertence ao objeto
         this.nome = nome; // O id (sem this) é o valor que veio de fora (como um parâmetro de uma função).
         this.descricao = descricao;
