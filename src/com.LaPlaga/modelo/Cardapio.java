@@ -2,24 +2,53 @@ package com.LaPlaga.modelo;
 
 import com.LaPlaga.modelo.isento.ItemCardapioIsento;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
 public class Cardapio {
     //Domínio do Problema que estou resolvendo
     private final ItemCardapio[] itens;
-    public Cardapio() {
-        // Cria a class cardapio dentro das CLASSES
-        ItemCardapio item1 = new ItemCardapio(1, "Suco", "É um suco", 2.66, 1, CategoriaCardapio.BEBIDAS);
-        ItemCardapio item2 = new ItemCardapioIsento(2, "Arroz com feijao", "Arroz com feijao tradicional familia brasileira", 2.66, 1, CategoriaCardapio.PRATOS_PRINCIPAIS);
-        ItemCardapio item3 = new ItemCardapio(3, "Pizza Margherita", "Pizza com muçarela, tomate e manjericão", 15.99, 1, CategoriaCardapio.PRATOS_PRINCIPAIS);
-        ItemCardapio item4 = new ItemCardapioIsento(4, "Suco Natural", "Suco de laranja natural e fresco", 4.50, 2, CategoriaCardapio.BEBIDAS);
-        ItemCardapio item5 = new ItemCardapio(5, "Brigadeiro", "Brigadeiro tradicional cobert com chocolate", 3.00, 3, CategoriaCardapio.SOBREMESSAS);
-        ItemCardapio item6 = new ItemCardapioIsento(6, "Café Premium", "Café coado quente e aromático", 2.50, 2, CategoriaCardapio.BEBIDAS);
-         itens = new ItemCardapio[6];
-         itens[0] = item1;
-         itens[1] = item2;
-         itens[2] = item3;
-         itens[3] = item4;
-         itens[4] = item5;
-         itens[5] = item6;
+
+    public Cardapio(String nomeArquivo) throws IOException {
+        // Cria a class cardápio dentro das CLASSES
+
+        Path arquivo = Path.of(nomeArquivo);
+        String conteudoArquivo = Files.readString(arquivo);
+        String[] linhasDoArquivo = conteudoArquivo.split("\n");
+        itens = new ItemCardapio[linhasDoArquivo.length];
+        for (int i = 0; i < linhasDoArquivo.length; i++) {
+            String linha = linhasDoArquivo[i];
+            IO.println("Linha" + i + ": " + linha);
+            if (nomeArquivo.endsWith(".csv")) {
+                String[] partes = linha.split(";");
+                for (int j = 0; j < partes.length; j++) {
+                    long id = Long.parseLong(partes[0]);
+                    String nome = partes[1];
+                    String descricao = partes[2];
+                    double preco = Double.parseDouble(partes[3]);
+                    CategoriaCardapio categoria = CategoriaCardapio.valueOf(partes[4]);
+                    ItemCardapio item;
+                    boolean impostoIsento = Boolean.parseBoolean(partes[7]);
+                    if (impostoIsento) {
+                        item = new ItemCardapioIsento(id, nome, descricao, preco, categoria);
+                    } else {
+                        item = new ItemCardapio(id, nome, descricao, preco, categoria);
+                    }
+                    boolean emPromocao = Boolean.parseBoolean(partes[5]);
+                    if (emPromocao) {
+                        double precoDesconto = Double.parseDouble(partes[6]);
+                        item.setPromocao(precoDesconto);
+                    }
+                    itens[i] = item;
+                }
+                // Tratativa CSV
+            } else if (nomeArquivo.endsWith(".json")) {
+              // Tratativa Json
+            } else {
+                IO.println("Arquivo com extensão invalida: " + nomeArquivo);
+            }
+        }
     }
 
     public double getSomaDosPrecos() {
@@ -30,7 +59,7 @@ public class Cardapio {
         return totalDePreco;
     }
 
-    public int getToalDeItensPromocao() {
+    public int getTotalDeItensPromocao() {
         int totaldeitenspromocao = 0;
         for (ItemCardapio item : itens) {
             if (item.isEmPromocao()) {
@@ -41,8 +70,9 @@ public class Cardapio {
     }
 
     public ItemCardapio getItemPorId(long idSelecionado) {
-        return itens[((int)idSelecionado) - 1];
+        return itens[((int) idSelecionado) - 1];
     }
+
     public ItemCardapio[] getItens() {
         return itens;
     }

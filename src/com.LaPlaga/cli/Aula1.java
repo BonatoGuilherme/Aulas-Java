@@ -2,11 +2,15 @@ import com.LaPlaga.modelo.Cardapio;
 import com.LaPlaga.modelo.ItemCardapio;
 
 // Reverse Domain Rename
-void main() {
+void main() throws IOException {
     // cli.Aula1 --> Command Line Interface (CLI)
     // Objeto (item1), atributo(nome)
     // item1.nome = "Suco";
-    Cardapio cardapio = new Cardapio();
+
+    String nomeArquivo = IO.readln("Digite um nome de arquivo: ");
+    Cardapio cardapio = new Cardapio(nomeArquivo);
+
+
     String linha = IO.readln("Digite um ID de um item do cardapio: ");
     long idselecionado = Long.parseLong(linha);
     IO.println(idselecionado);
@@ -31,11 +35,11 @@ void main() {
     IO.println(porcentagemDesconto);
     IO.println("Imposto: " + itemselecionado.getImposto());
     IO.println("Categoria: " + itemselecionado.getNomedaCategoria()); // Chamando um metodo
-    IO.println("Arrays"); // Bloco de memoria, aloca memoria
+    IO.println("Arrays"); // Bloco de memória, aloca memoria
     IO.println("laço de repetição");
 
     IO.println("Total dos precos: " + cardapio.getSomaDosPrecos());
-    IO.println("Total de itens em promoção: " + cardapio.getToalDeItensPromocao());
+    IO.println("Total de itens em promoção: " + cardapio.getTotalDeItensPromocao());
     double precoLimite = 10.00;
     for (ItemCardapio item : cardapio.getItens()) {
         if (item.getPreco() <= precoLimite) {
