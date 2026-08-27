@@ -5,13 +5,13 @@
 package com.LaPlaga.modelo;
 
 public class ItemCardapio {
+    private long id; // Atributos
     private String nome; // Atributos
     private String descricao; // Atributos
-    private boolean emPromocao; // Atributos
     private double preco; // Atributos
-    private double precoDesconto; // Atributos
-    private long id; // Atributos
     private CategoriaCardapio categoria; // Atributos
+    private double precoDesconto; // Atributos
+    private boolean emPromocao; // Atributos
 
     // Linguagens orientadas a objetos
     // Classes tem atributos e metodos
@@ -24,10 +24,10 @@ public class ItemCardapio {
 
     // Ja passa valores no new
     // Não tem return
-    // Nome do contrutor sempre sera o nome da classe (modelo.ItemCardapio)
+    // Nome do contrutor sempre será o nome da classe (modelo.ItemCardapio)
     // CONTRUTOR
     // modelo.ItemCardapio(objeto), long id(parametro), long(tipo), id(nome)
-    protected ItemCardapio(long id, String nome, String descricao, double preco, int precoDesconto, CategoriaCardapio categoria) {
+    public ItemCardapio(long id, String nome, String descricao, double preco, CategoriaCardapio categoria) {
         this.id = id; // O this.id (com this) é a propriedade (o campo) que pertence ao objeto
         this.nome = nome; // O id (sem this) é o valor que veio de fora (como um parâmetro de uma função).
         this.descricao = descricao;
@@ -41,7 +41,7 @@ public class ItemCardapio {
     }
 
     // VOID define e não tem retorno
-    public void definePromocao(double precoComDesconto) {
+    public void setPromocao(double precoComDesconto) {
         emPromocao = true;
         this.precoDesconto = precoComDesconto;
     }

@@ -5,9 +5,9 @@ import com.LaPlaga.modelo.ItemCardapio;
 
 public class ItemCardapioIsento extends ItemCardapio {
 
-    public ItemCardapioIsento(long id, String nome, String descricao, double preco, int precoDesconto, CategoriaCardapio categoria) {
+    public ItemCardapioIsento(long id, String nome, String descricao, double preco, CategoriaCardapio categoria) {
         //chama da classe mãe (ItemCardapio) o contrutor dela com o SUPER()
-        super(id, nome, descricao, preco, precoDesconto, categoria);
+        super(id, nome, descricao, preco, categoria);
     }
     //Reescrita de metodo (override)
     @Override //Ajuda a reconhecer

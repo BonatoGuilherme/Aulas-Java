@@ -35,8 +35,6 @@ void main() throws IOException {
     IO.println(porcentagemDesconto);
     IO.println("Imposto: " + itemselecionado.getImposto());
     IO.println("Categoria: " + itemselecionado.getNomedaCategoria()); // Chamando um metodo
-    IO.println("Arrays"); // Bloco de memória, aloca memoria
-    IO.println("laço de repetição");
 
     IO.println("Total dos precos: " + cardapio.getSomaDosPrecos());
     IO.println("Total de itens em promoção: " + cardapio.getTotalDeItensPromocao());
