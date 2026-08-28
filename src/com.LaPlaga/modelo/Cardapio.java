@@ -1,17 +1,17 @@
 package com.LaPlaga.modelo;
 
-import com.LaPlaga.leitor.FabricaLeitorItensCardapio;
+import com.LaPlaga.leitor.LeitorItensCardapio;
 
 
 import java.io.IOException;
 
 public class Cardapio {
-    //Domínio do Problema
+
     private final ItemCardapio[] itens;
 
     public Cardapio(String nomeArquivo) throws IOException {
-        FabricaLeitorItensCardapio fabrica = new FabricaLeitorItensCardapio();
-        com.LaPlaga.leitor.LeitorItensCardapio leitor = fabrica.criarLeitor(nomeArquivo);
+
+        LeitorItensCardapio leitor = LeitorItensCardapio.criarLeitor(nomeArquivo);
         if (leitor != null) {
             itens = leitor.processaArquivo(nomeArquivo);
         } else  {
