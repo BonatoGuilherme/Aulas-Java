@@ -4,9 +4,37 @@
 // Classes
 package com.LaPlaga.modelo;
 
+import java.util.Objects;
+
 public class ItemCardapio {
     private long id; // Atributos
     private String nome; // Atributos
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        ItemCardapio that = (ItemCardapio) o;
+        return id == that.id && Double.compare(preco, that.preco) == 0 && Double.compare(precoDesconto, that.precoDesconto) == 0 && emPromocao == that.emPromocao && Objects.equals(nome, that.nome) && Objects.equals(descricao, that.descricao) && categoria == that.categoria;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, nome, descricao, preco, categoria, precoDesconto, emPromocao);
+    }
+
+    @Override
+    public String toString() {
+        return "ItemCardapio{" +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                ", descricao='" + descricao + '\'' +
+                ", preco=" + preco +
+                ", categoria=" + categoria +
+                ", precoDesconto=" + precoDesconto +
+                ", emPromocao=" + emPromocao +
+                '}';
+    }
+
     private String descricao; // Atributos
     private double preco; // Atributos
     private CategoriaCardapio categoria; // Atributos
