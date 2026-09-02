@@ -1,9 +1,9 @@
 # Projeto Cardápio
 
 Este projeto é um exercício de Java que modela um cardápio usando orientação a
-objetos. Ele permite criar itens, organizar esses itens em um cardápio,
+objetos. Ele permite criar itens de cardápio, organizar esses itens,
 consultar um item pelo identificador e calcular informações como desconto,
-imposto e total de preços.
+imposto e total de preços. Os dados podem ser carregados de arquivos JSON ou CSV.
 
 ## Estrutura do projeto
 
@@ -11,133 +11,384 @@ imposto e total de preços.
 src/
 └── com.LaPlaga/
     ├── cli/
-    │   └── Aula1.java
-    └── modelo/
-        ├── Cardapio.java
-        ├── CategoriaCardapio.java
-        ├── ItemCardapio.java
-        └── isento/
-            └── ItemCardapioIsento.java
+    │   ├── Aula1.java                    (Interface de linha de comando)
+    │   └── TesteObjetos.java
+    ├── modelo/
+    │   ├── Cardapio.java                 (Gerenciador de itens)
+    │   ├── CategoriaCardapio.java        (Enumeração de categorias)
+    │   ├── ItemCardapio.java             (Classe base de itens)
+    │   └── isento/
+    │       └── ItemCardapioIsento.java   (Itens sem imposto)
+    └── leitor/
+        ├── LeitorItensCardapio.java      (Interface para leitores)
+        ├── LeitorItensCardapioBase.java  (Classe abstrata base)
+        ├── LeitorItensCardapioCSV.java   (Leitor de arquivos CSV)
+        └── LeitorItensCardapioJSON.java  (Leitor de arquivos JSON)
+
+Arquivos de dados:
+├── itens-cardapio.csv                   (Dados em formato CSV)
+└── itens-cardapio.json                  (Dados em formato JSON)
 ```
 
-- `Aula1.java`: camada de interação com o usuário pela linha de comando.
-- `Cardapio.java`: agrega e administra os itens disponíveis.
-- `ItemCardapio.java`: classe base que representa um item.
-- `ItemCardapioIsento.java`: especialização de item sem imposto.
-- `CategoriaCardapio.java`: enumeração das categorias possíveis.
+### Descrição dos Arquivos
+
+#### Camada `modelo/` (Model Layer)
+- **`ItemCardapio.java`**: Classe base que representa um item do cardápio com atributos como ID, nome, descrição, preço, categoria e promoção.
+- **`ItemCardapioIsento.java`**: Especialização que herda de `ItemCardapio` para itens isentos de imposto.
+- **`Cardapio.java`**: Gerenciador que agrega um array de itens e fornece operações como busca por ID, soma de preços e contagem de itens em promoção.
+- **`CategoriaCardapio.java`**: Enumeração com as categorias possíveis: `ENTRADAS`, `PRATOS_PRINCIPAIS`, `SOBREMESAS`, `BEBIDAS`.
+
+#### Camada `leitor/` (Reader/Parser Layer)
+- **`LeitorItensCardapio.java`**: Interface que define o contrato para leitura de arquivos.
+- **`LeitorItensCardapioBase.java`**: Classe abstrata que fornece a lógica comum de leitura de arquivos (ler arquivo, dividir linhas).
+- **`LeitorItensCardapioCSV.java`**: Implementação que processa arquivos CSV. Esperado formato: `id;nome;descricao;preco;categoria;emPromocao;precoDesconto;impostoIsento`
+- **`LeitorItensCardapioJSON.java`**: Implementação que processa arquivos JSON com estrutura de objetos.
+
+#### Camada `cli/` (Command Line Interface)
+- **`Aula1.java`**: Programa principal que interage com o usuário. Solicita um arquivo, carrega os itens, permite consultar um item por ID e exibe informações detalhadas sobre o item e o cardápio.
+- **`TesteObjetos.java`**: Arquivo auxiliar para testes.
+
+
+
+## Guia de Uso
+
+### Executar o Programa
+
+1. Compile o projeto:
+```bash
+javac -d out -sourcepath src src/com/LaPlaga/cli/Aula1.java
+```
+
+2. Execute a aplicação:
+```bash
+java -cp out com.LaPlaga.cli.Aula1
+```
+
+3. O programa solicita o nome de um arquivo (ex: `itens-cardapio.csv` ou `itens-cardapio.json`)
+4. Após carregar, solicita um ID de item (1 a 6)
+5. Exibe informações do item, descontos, impostos e totais
+
+### Formato dos Arquivos de Dados
+
+#### CSV (`itens-cardapio.csv`)
+```
+id;nome;descricao;preco;categoria;emPromocao;precoDesconto;impostoIsento
+1;Suco;É um suco;2.66;BEBIDAS;false;0;false
+2;Água;Água mineral;1.50;BEBIDAS;true;1.00;false
+```
+
+#### JSON (`itens-cardapio.json`)
+```json
+{
+  "id": 1,
+  "nome": "Suco",
+  "descricao": "É um suco",
+  "preco": 2.66,
+  "categoria": "BEBIDAS",
+  "emPromocao": false,
+  "precoDesconto": 0,
+  "impostoIsento": false
+}
+```
 
 ## Conceitos utilizados
 
-### Pacotes
+### 1. Pacotes
 
-O comando `package` organiza as classes em namespaces.
-
-Em [`ItemCardapio.java`](src/com.LaPlaga/modelo/ItemCardapio.java), a classe
-pertence ao pacote `com.LaPlaga.modelo`:
+O comando `package` organiza as classes em namespaces. Por exemplo:
 
 ```java
 package com.LaPlaga.modelo;
 ```
 
-O `import` permite utilizar uma classe de outro pacote. Por exemplo,
-[`Aula1.java`](src/com.LaPlaga/cli/Aula1.java) importa `Cardapio` e
-`ItemCardapio` para usá-los na interface de linha de comando.
+Isso permite evitar conflitos de nomes e facilita a manutenção.
 
-### Classe e objeto
+### 2. Classe ItemCardapio
 
-Uma classe é um molde que define dados e comportamentos. Em
-`ItemCardapio.java`, a declaração:
+A classe base que representa um item do cardápio:
 
 ```java
-public class ItemCardapio
-```
-
-define o modelo de um item. Um objeto é uma instância dessa classe, criada com
-`new`, como ocorre em [`Cardapio.java`](src/com.LaPlaga/modelo/Cardapio.java):
-
-```java
-ItemCardapio item1 =
-    new ItemCardapio(1, "Suco", "É um suco", 2.66, 1,
-                     CategoriaCardapio.BEBIDAS);
-```
-
-### Atributos e tipos
-
-Os atributos armazenam o estado de cada objeto. Em `ItemCardapio.java` são
-usados:
-
-- `String` para `nome` e `descricao`;
-- `boolean` para `emPromocao`;
-- `double` para valores monetários;
-- `long` para o identificador `id`;
-- `CategoriaCardapio` para a categoria.
-
-O modificador `private` impede o acesso direto aos atributos fora da classe.
-Isso protege o estado do objeto e é parte do conceito de **encapsulamento**.
-
-### Encapsulamento e métodos de acesso
-
-Os métodos `getNome()`, `getDescricao()`, `getPreco()`, `getId()` e os demais
-`getters` de `ItemCardapio.java` fornecem acesso controlado aos dados.
-
-Para atributos booleanos, a convenção usada é `isEmPromocao()`:
-
-```java
-public boolean isEmPromocao() {
-    return emPromocao;
+public class ItemCardapio {
+    private long id;
+    private String nome;
+    private String descricao;
+    private double preco;
+    private CategoriaCardapio categoria;
+    private double precoDesconto;
+    private boolean emPromocao;
 }
 ```
 
-### Construtor
+**Atributos principais:**
+- `id`: Identificador único do item (long)
+- `nome`: Nome do item (String)
+- `descricao`: Descrição do item (String)
+- `preco`: Preço normal do item (double)
+- `categoria`: Categoria do item (enumeração CategoriaCardapio)
+- `precoDesconto`: Preço com desconto (double)
+- `emPromocao`: Indica se o item está em promoção (boolean)
 
-O construtor inicializa o objeto no momento do `new`. Ele possui o mesmo nome
-da classe e não possui tipo de retorno:
+**Métodos principais:**
+- `getNome()`, `getDescricao()`, `getPreco()`, `getId()`: Getters para acessar os atributos
+- `isEmPromocao()`: Verifica se está em promoção
+- `calculaPorcentagemDesconto()`: Retorna a porcentagem de desconto como fração (0.25 = 25%)
+- `setPromocao(double precoComDesconto)`: Define um desconto para o item
+- `getImposto()`: Calcula o imposto (10% do preço, ou 0% se em promoção)
+- `equals()`, `hashCode()`, `toString()`: Métodos padrão do Java
 
+**Construtor:**
 ```java
-protected ItemCardapio(long id, String nome, String descricao,
-                       double preco, int precoDesconto,
-                       CategoriaCardapio categoria)
+public ItemCardapio(long id, String nome, String descricao, 
+                    double preco, CategoriaCardapio categoria)
 ```
 
-O modificador `protected` permite que o construtor seja usado no mesmo pacote
-e por classes filhas. Por isso ele pode ser chamado por `Cardapio.java` e por
-`ItemCardapioIsento.java`.
+### 3. Classe ItemCardapioIsento
+
+Herda de `ItemCardapio` para representar itens sem imposto:
+
+```java
+public class ItemCardapioIsento extends ItemCardapio {
+    @Override
+    public double getImposto() {
+        return 0.0;
+    }
+}
+```
+
+**Conceitos utilizados:**
+- **Herança**: Estende `ItemCardapio` para reutilizar código
+- **Polimorfismo**: Sobrescreve `getImposto()` para retornar sempre 0
+- **@Override**: Anotação que indica que o método está sobrescrevendo um método da classe pai
+
+### 4. Classe CategoriaCardapio
+
+Enumeração com as categorias possíveis:
+
+```java
+public enum CategoriaCardapio {
+    ENTRADAS, PRATOS_PRINCIPAIS, SOBREMESAS, BEBIDAS
+}
+```
+
+**Uso:**
+```java
+CategoriaCardapio categoria = CategoriaCardapio.BEBIDAS;
+```
+
+### 5. Classe Cardapio
+
+Gerenciador que mantém um array de itens e fornece operações:
+
+```java
+public class Cardapio {
+    private final ItemCardapio[] itens;
+    
+    public Cardapio(String nomeArquivo) throws IOException {
+        LeitorItensCardapio leitor = LeitorItensCardapio.criarLeitor(nomeArquivo);
+        if (leitor != null) {
+            itens = leitor.processaArquivo(nomeArquivo);
+        } else {
+            itens = new ItemCardapio[0];
+        }
+    }
+}
+```
+
+**Métodos principais:**
+- `getSomaDosPrecos()`: Retorna a soma de todos os preços
+- `getTotalDeItensPromocao()`: Conta quantos itens estão em promoção
+- `getItemPorId(long idSelecionado)`: Busca um item por ID (retorna `itens[id-1]`)
+- `getItens()`: Retorna o array completo de itens
+
+**Características:**
+- `itens` é `final`: O array é inicializado uma vez e não pode ser reatribuído
+- Usa `throws IOException`: Pode lançar exceção se o arquivo não for encontrado
+- Utiliza polimorfismo: `LeitorItensCardapio` retorna diferentes tipos de leitores conforme a extensão
+
+### 6. Leitor de Arquivos (Camada `leitor/`)
+
+#### LeitorItensCardapio (Interface)
+Define o contrato para qualquer leitor:
+
+```java
+public interface LeitorItensCardapio {
+    ItemCardapio[] processaArquivo(String nomeArquivo) throws IOException;
+    static LeitorItensCardapio criarLeitor(String nomeArquivo) { ... }
+}
+```
+
+#### LeitorItensCardapioBase (Classe Abstrata)
+Fornece a lógica comum de leitura:
+
+```java
+public abstract class LeitorItensCardapioBase implements LeitorItensCardapio {
+    public ItemCardapio[] processaArquivo(String nomeArquivo) throws IOException {
+        // Lê o arquivo
+        String conteudoArquivo = Files.readString(Path.of(nomeArquivo));
+        String[] linhasDoArquivo = conteudoArquivo.split("\n");
+        
+        // Processa cada linha
+        ItemCardapio[] itens = new ItemCardapio[linhasDoArquivo.length];
+        for (int i = 0; i < linhasDoArquivo.length; i++) {
+            itens[i] = processaLinha(linhasDoArquivo[i]);
+        }
+        return itens;
+    }
+    
+    protected abstract ItemCardapio processaLinha(String linha);
+}
+```
+
+**Padrão de Design**: Template Method - a estrutura está na classe base, os detalhes em subclasses
+
+#### LeitorItensCardapioCSV
+Processa linhas separadas por `;`:
+
+```java
+@Override
+protected ItemCardapio processaLinha(String linha) {
+    String[] partes = linha.split(";");
+    long id = Long.parseLong(partes[0]);
+    String nome = partes[1];
+    // ... demais campos
+    return item;
+}
+```
+
+#### LeitorItensCardapioJSON
+Processa strings JSON, removendo caracteres especiais e parseando os valores:
+
+```java
+@Override
+protected ItemCardapio processaLinha(String linha) {
+    linha = linha.replace("[", "").replace("]", "").replace("{", ""}...;
+    String[] partes = linha.split(",");
+    // Extrai cada propriedade e seu valor
+    // ... processamento
+}
+```
+
+### 7. Interface com Usuário (Aula1.java)
+
+Programa principal que interage com o usuário:
+
+```java
+void main() throws IOException {
+    String nomeArquivo = IO.readln("Digite um nome de arquivo: ");
+    Cardapio cardapio = new Cardapio(nomeArquivo);
+    
+    String linha = IO.readln("Digite um ID de um item do cardapio: ");
+    long idselecionado = Long.parseLong(linha);
+    
+    ItemCardapio itemselecionado = cardapio.getItemPorId(idselecionado);
+    
+    // Exibe informações
+    IO.println("Nome: " + itemselecionado.getNome());
+    IO.println("Imposto: " + itemselecionado.getImposto());
+    // ... demais informações
+}
+```
+
+**Funcionalidades:**
+- Lê nome do arquivo e carrega os dados
+- Permite consultar um item por ID
+- Exibe detalhes do item (nome, descrição, preço, desconto, imposto)
+- Exibe totais do cardápio (soma de preços, itens em promoção)
+- Lista itens com preço menor que R$ 10,00
+
+## Conceitos de Orientação a Objetos
+
+
+
+## Conceitos de Orientação a Objetos
+
+### Encapsulamento
+Os atributos são `private` e acessados através de getters:
+```java
+private double preco;
+public double getPreco() {
+    return preco;
+}
+```
+Isso protege o estado do objeto e permite controle sobre quem pode acessar e modificar os dados.
+
+### Modificador `final`
+Indica que um atributo não pode ser reatribuído após a inicialização:
+```java
+private final ItemCardapio[] itens;  // Array não pode ser substituído
+```
+
+### Modificador `protected`
+Permite acesso no mesmo pacote e por classes filhas:
+```java
+protected ItemCardapio(long id, String nome, ...)  // Pode ser chamado por ItemCardapioIsento
+```
 
 ### Palavra-chave `this`
-
-No construtor, `this.id` representa o atributo pertencente ao objeto, enquanto
-`id` representa o parâmetro recebido:
-
+Referencia o atributo do objeto, diferenciando de parâmetros com mesmo nome:
 ```java
-this.id = id;
+this.id = id;  // this.id é o atributo; id é o parâmetro
 ```
 
-O mesmo padrão é usado para `nome`, `descricao`, `preco`, `precoDesconto` e
-`categoria`.
-
-### Métodos, parâmetros e retorno
-
-Um método define um comportamento. Em `ItemCardapio.java`:
-
+### Herança (`extends`)
+Uma classe herda atributos e métodos de outra:
 ```java
-public double calculaPorcentagemDesconto() {
-    return (preco - precoDesconto) / preco;
+public class ItemCardapioIsento extends ItemCardapio { ... }
+```
+
+### Polimorfismo
+Diferentes classes podem implementar o mesmo método de formas diferentes:
+```java
+// ItemCardapio retorna 10% de imposto
+// ItemCardapioIsento retorna 0% de imposto
+// Mesmo nome, comportamentos diferentes
+```
+
+### Sobrescrita (`@Override`)
+Uma classe filha redefine um método da classe mãe:
+```java
+@Override
+public double getImposto() {
+    return 0.0;
 }
 ```
 
-Esse método recebe os valores já armazenados no objeto e retorna um `double`.
-O método `definePromocao(double precoComDesconto)` recebe um parâmetro, altera
-o estado do objeto e usa `void`, pois não retorna valor.
+### Padrão de Design: Template Method
+A classe base define a estrutura, subclasses completam os detalhes:
+```java
+// LeitorItensCardapioBase: estrutura de leitura
+// LeitorItensCardapioCSV e JSON: implementam processaLinha()
+```
 
-O cálculo retorna uma fração. Por exemplo, `0.25` representa 25%; para exibir
-diretamente como porcentagem, seria necessário multiplicar o resultado por
-`100`.
+### Interfaces e Contratos
+`LeitorItensCardapio` define o contrato que todas as implementações devem seguir.
 
-### Condicional `if/else`
+### Enumerações (`enum`)
+Representa um conjunto fixo de valores possíveis:
+```java
+public enum CategoriaCardapio {
+    ENTRADAS, PRATOS_PRINCIPAIS, SOBREMESAS, BEBIDAS
+}
+```
 
-O método `getImposto()` escolhe o preço usado no cálculo conforme o item esteja
-ou não em promoção:
+## Estruturas de Dados e Controle
 
+### Array
+Armazena múltiplos itens do mesmo tipo com tamanho fixo:
+```java
+ItemCardapio[] itens = new ItemCardapio[6];
+```
+
+### for-each
+Itera sobre elementos de um array sem controle manual de índices:
+```java
+for (ItemCardapio item : itens) {
+    // Processa cada item
+}
+```
+
+### Condicional if/else
+Escolhe diferentes caminhos de execução:
 ```java
 if (emPromocao) {
     imposto = precoDesconto * 0.1;
@@ -146,125 +397,78 @@ if (emPromocao) {
 }
 ```
 
-### Herança
-
-[`ItemCardapioIsento.java`](src/com.LaPlaga/modelo/isento/ItemCardapioIsento.java)
-usa `extends` para herdar atributos e métodos de `ItemCardapio`:
-
+### Conversão de Tipos
+Converte de `String` para outros tipos:
 ```java
-public class ItemCardapioIsento extends ItemCardapio
+long id = Long.parseLong("123");       // String -> long
+double preco = Double.parseDouble("9.99");  // String -> double
+boolean flag = Boolean.parseBoolean("true");  // String -> boolean
 ```
 
-Assim, um `ItemCardapioIsento` também pode ser tratado como
-`ItemCardapio`, como nos itens criados em `Cardapio.java`.
+## Fluxo de Execução
 
-### `super`
-
-O construtor da classe filha chama o construtor da classe mãe com `super(...)`:
-
-```java
-super(id, nome, descricao, preco, precoDesconto, categoria);
+```
+1. Usuário executa Aula1.java
+   ↓
+2. Programa solicita nome do arquivo (ex: "itens-cardapio.csv")
+   ↓
+3. Cardapio tenta carregar o arquivo:
+   - Detecta extensão (.csv ou .json)
+   - Cria um LeitorItensCardapio apropriado
+   ↓
+4. Leitor lê o arquivo e processa linha por linha:
+   - LeitorItensCardapioBase lê o arquivo
+   - Subclass processa cada linha
+   - Cria objetos ItemCardapio ou ItemCardapioIsento
+   ↓
+5. Cardapio armazena os itens em um array
+   ↓
+6. Usuário digita um ID (1-6)
+   ↓
+7. Aula1 busca o item: cardapio.getItemPorId(id)
+   ↓
+8. Exibe informações do item:
+   - Nome, descrição
+   - Preço e desconto (se em promoção)
+   - Imposto calculado
+   - Categoria
+   ↓
+9. Exibe totais do cardápio:
+   - Soma de todos os preços
+   - Quantidade de itens em promoção
+   - Lista itens com preço < R$ 10,00
 ```
 
-Isso garante que a parte herdada do objeto seja inicializada corretamente.
+## Fluxo de Dados
 
-### Polimorfismo e sobrescrita
-
-`ItemCardapioIsento` sobrescreve `getImposto()`:
-
-```java
-@Override
-public double getImposto() {
-    return 0.0;
-}
+### Arquivo CSV → ItemCardapio
+```
+"1;Suco;É um suco;2.66;BEBIDAS;false;0;false"
+   ↓ (LeitorItensCardapioCSV.processaLinha)
+ItemCardapio(id=1, nome="Suco", preco=2.66, categoria=BEBIDAS)
 ```
 
-Quando `Cardapio.java` percorre o array e chama `item.getImposto()`, Java
-executa a implementação correspondente ao tipo real do objeto. Itens comuns
-calculam 10% de imposto; itens isentos retornam `0.0`. Esse comportamento é
-**polimorfismo**.
-
-### Enumeração
-
-`CategoriaCardapio.java` define um conjunto fixo de valores:
-
-```java
-public enum CategoriaCardapio {
-    ENTRADAS, PRATOS_PRINCIPAIS, SOBREMESSAS, BEBIDAS
-}
+### Arquivo JSON → ItemCardapio
+```
+{"id": 1, "nome": "Suco", "preco": 2.66, ...}
+   ↓ (LeitorItensCardapioJSON.processaLinha)
+ItemCardapio(id=1, nome="Suco", preco=2.66, ...)
 ```
 
-O enum evita textos livres e reduz erros ao representar categorias. O uso
-aparece, por exemplo, em `CategoriaCardapio.BEBIDAS`.
+## Observações Importantes
 
-### Array e laço `for-each`
+- **`emPromocao` padrão**: Começar como `false`; muda apenas quando `setPromocao()` é chamado
+- **Porcentagem de desconto**: `calculaPorcentagemDesconto()` retorna fração (0.25 = 25%), não percentual
+- **ID vs Índice**: IDs são 1-based, mas arrays são 0-based. `getItemPorId()` faz a conversão subtraindo 1
+- **Exceções**: `IOException` ao ler arquivos; `ArrayIndexOutOfBoundsException` se ID inválido
+- **Valores monetários**: Usa `double`; para aplicações financeiras reais, prefira `BigDecimal`
+- **Imposto**: 10% do preço normal, ou 0% se em promoção, ou 0% se `ItemCardapioIsento`
 
-`Cardapio.java` mantém os itens em um array:
+## Padrões de Design Utilizados
 
-```java
-private final ItemCardapio[] itens;
-```
+1. **Factory Pattern**: `LeitorItensCardapio.criarLeitor()` cria o leitor apropriado conforme extensão
+2. **Template Method**: `LeitorItensCardapioBase` define estrutura, subclasses implementam detalhes
+3. **Strategy Pattern**: Diferentes estratégias de leitura (CSV vs JSON)
+4. **Polymorphism**: `getImposto()` retorna valores diferentes conforme tipo real do objeto
 
-O array tem tamanho fixo e é preenchido no construtor. O `for-each` percorre
-cada elemento sem exigir controle manual de índices:
 
-```java
-for (ItemCardapio item : itens) {
-    totalDePreco += item.getPreco();
-}
-```
-
-Esse padrão é usado para somar preços e contar itens em promoção.
-
-### `final`
-
-O atributo `itens` é `final`, portanto sua referência deve ser inicializada uma
-vez. O conteúdo do array ainda pode ser preenchido durante a construção do
-`Cardapio`.
-
-### CLI, entrada e conversão
-
-Em [`Aula1.java`](src/com.LaPlaga/cli/Aula1.java), `IO.readln(...)` lê o texto
-digitado. Como a entrada é uma `String`, `Long.parseLong(linha)` converte o
-valor para `long`:
-
-```java
-String linha = IO.readln("Digite um ID de um item do cardapio: ");
-long idselecionado = Long.parseLong(linha);
-```
-
-`IO.println(...)` escreve os resultados no console. A forma `void main()` e a
-classe `IO` são recursos do modelo simplificado de execução presente nas
-versões recentes do Java; em projetos tradicionais, normalmente é usado
-`public static void main(String[] args)`.
-
-### Busca por identificador
-
-`Cardapio.getItemPorId(long idSelecionado)` transforma o ID em índice do array:
-
-```java
-return itens[((int) idSelecionado) - 1];
-```
-
-Como arrays começam no índice `0` e os IDs começam em `1`, o método subtrai
-`1`. Portanto, o ID `1` acessa `itens[0]`.
-
-## Fluxo de execução
-
-1. `Aula1` cria um objeto `Cardapio`.
-2. O construtor de `Cardapio` cria itens comuns e itens isentos.
-3. O usuário informa um ID.
-4. O cardápio localiza o item correspondente.
-5. `Aula1` consulta os getters e calcula desconto, preço e imposto.
-6. O programa exibe totais e itens cujo preço está abaixo de `10.00`.
-
-## Observações importantes
-
-- `emPromocao` começa como `false`; ele só se torna `true` quando
-  `definePromocao(...)` é chamado.
-- `calculaPorcentagemDesconto()` retorna uma fração, não um número já
-  multiplicado por `100`.
-- `getItemPorId()` pressupõe um ID entre `1` e `6`; IDs inválidos podem causar
-  `ArrayIndexOutOfBoundsException`.
-- Para valores financeiros reais, `BigDecimal` costuma ser mais apropriado que
-  `double`, pois evita imprecisões binárias.
