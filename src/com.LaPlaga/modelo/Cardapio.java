@@ -1,9 +1,8 @@
 package com.LaPlaga.modelo;
 
 import com.LaPlaga.leitor.LeitorItensCardapio;
-
-
 import java.io.IOException;
+import static java.lang.IO.println;
 
 public class Cardapio {
 
@@ -15,7 +14,7 @@ public class Cardapio {
         if (leitor != null) {
             itens = leitor.processaArquivo(nomeArquivo);
         } else  {
-          IO.println("O tipo de arquivo é invalido: " + nomeArquivo);
+          println("O tipo de arquivo é invalido: " + nomeArquivo);
           itens = new ItemCardapio[0];
         }
     }

@@ -2,6 +2,7 @@ import com.LaPlaga.modelo.Cardapio;
 import com.LaPlaga.modelo.ItemCardapio;
 
 // Reverse Domain Rename
+
 void main() throws IOException {
     // cli.Aula1 --> Command Line Interface (CLI)
     // Objeto (item1), atributo(nome)
@@ -9,8 +10,6 @@ void main() throws IOException {
 
     String nomeArquivo = IO.readln("Digite um nome de arquivo: ");
     Cardapio cardapio = new Cardapio(nomeArquivo);
-
-
     String linha = IO.readln("Digite um ID de um item do cardapio: ");
     long idselecionado = Long.parseLong(linha);
     IO.println(idselecionado);
