@@ -1,6 +1,6 @@
 package TreinarTLG.model;
 
-public class addTwoNumbers {
+public class AddTwoNumbers {
     public double SomaNumbers(double a, double b) {
         return a + b;
     }
