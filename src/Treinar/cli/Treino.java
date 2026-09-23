@@ -1,15 +1,6 @@
 package Treinar.cli;
 
-import Treinar.model.AddTwoNumbers;
-import Treinar.model.TreinoData;
 import Treinar.model.FizzBuzz;
-
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Optional;
-
-
-import static Treinar.model.TreinoOptional.buscarUsuario;
 
 class Treino {
     void main() {
@@ -42,6 +33,6 @@ class Treino {
 //        IO.println("Você tem " + idade + " anos");
         int number = Integer.parseInt(IO.readln("Digite um número: "));
         FizzBuzz fizzBuzz = new FizzBuzz();
-        String numsei = String.valueOf(fizzBuzz.buzzfizz(number));
+        int i = (int) fizzBuzz.divisivelPor3e5(number);
     }
 }

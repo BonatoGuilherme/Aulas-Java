@@ -1,7 +1,7 @@
 package Treinar.model;
 
 public class FizzBuzz {
-    public Object buzzfizz(int number){
+    public Object divisivelPor3e5(int number){
          for(int i = 0;i<=number;i++){
              if(i % 3 == 0 && i % 5 == 0) {
                  IO.println(i + " é "+ "FizzBuzz");
