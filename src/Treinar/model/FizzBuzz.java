@@ -13,7 +13,7 @@ public class FizzBuzz {
                  IO.println(i + " é "+ "Nada pai");
              }
          }
-        return null;
+        return number;
     }
 }
 
