@@ -1,4 +1,4 @@
-package TreinarTLG.model;
+package Treinar.model;
 
 import java.util.Optional;
 
