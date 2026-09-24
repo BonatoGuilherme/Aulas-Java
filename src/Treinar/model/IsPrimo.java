@@ -13,10 +13,12 @@ public class IsPrimo {
         return true;
     }
     public void listarPrimos(int number){
-        for (int i = 0; i <= number; i++){
-            isPrimo(i);
-        };
-
+        for (int i = 2; i <= number; i++){
+            if(isPrimo(i)){
+                IO.println(i + " é Primo");
+            }  else{
+                IO.println( i + " Não é primo");
+            }
+        }
     }
-
 }
