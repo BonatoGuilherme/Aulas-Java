@@ -7,6 +7,7 @@ import Treinar.model.TreinoData;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Optional;
 
 import static Treinar.model.TreinoOptional.buscarUsuario;
@@ -42,9 +43,9 @@ class Treino {
 //        IO.println("Você tem " + idade + " anos");
 
         int number = Integer.parseInt(IO.readln("Digite um número: "));
-        FizzBuzz fizzBuzz = new FizzBuzz();
-        int i = (int) fizzBuzz.divisivelPor3e5(number);
+//        FizzBuzz fizzBuzz = new FizzBuzz();
+//        int i = (int) fizzBuzz.divisivelPor3e5(number);
         IsPrimo isPrimo = new IsPrimo();
-        boolean primo = isPrimo.isPrimo(number);
+
     }
 }

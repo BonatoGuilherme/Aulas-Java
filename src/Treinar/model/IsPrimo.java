@@ -12,4 +12,11 @@ public class IsPrimo {
         }
         return true;
     }
+    public void listarPrimos(int number){
+        for (int i = 0; i <= number; i++){
+            isPrimo(i);
+        };
+
+    }
+
 }
